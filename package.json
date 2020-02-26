@@ -1,0 +1,34 @@
+{
+  "name": "ers",
+  "version": "1.0.0",
+  "description": "Expense Reimbursement System (ERS) API",
+  "main": ".ts",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2002javareact/project-0-ahmad-hash.git"
+  },
+  "author": "Ahmad Adil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2002javareact/project-0-ahmad-hash/issues"
+  },
+  "homepage": "https://github.com/2002javareact/project-0-ahmad-hash#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/express-session": "^1.15.16",
+    "@types/pg": "^7.14.1",
+    "express-session": "^1.17.0",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "pg": "^7.18.2"
+  }
+}
