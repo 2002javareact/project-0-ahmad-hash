@@ -17,7 +17,7 @@ pro.use(logMiddleware)
 pro.use(sessionMiddleware)
 
 pro.use('/users', userRouter)
-pro.use('/reimbursements', reimRouter)
+pro.use('/reimbursements', reimRouter) // reimburstment route is here so skip it from the user.
 
 pro.post('/login', async (req,res)=>{
     

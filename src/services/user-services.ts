@@ -11,14 +11,14 @@ export async function findUserByUsernameAndPassword(username:string, password:st
 
 export async function findAllUsers():Promise<User[]>{
     // I write to a different table, who just sent this request
-    // know what time of day, these requests get most sent
+    // know what time of day, these requests get
     return await daoFindAllUsers()
  }
  
  
  export async function saveOneUser(newUser:UserDTO):Promise<User>
  {
-   // console.log('this is service ' +User  );
+
     
     return await daoSaveOneUser(newUser)
  }

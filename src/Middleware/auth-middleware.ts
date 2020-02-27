@@ -1,23 +1,6 @@
 
 
-
-export const authAdminMid=(req,res,next) =>
-{
-    if (!req.session.user) 
-    {
-        res.status(401).send('Please Login')
-    }
-    else if (req.session.user.roleId === 1) 
-    {
-        next()
-    } 
-    else 
-    {
-        res.status(403).send('You are Unauthorized for this EndPoint')
-    }
-}
-
-export const auth=(roles:String[])=>
+export const auth=(roles:String[])=> // anyone whitout login tell him to log in
 {
     return(req,res,next)=>
     {
@@ -46,7 +29,7 @@ export const auth=(roles:String[])=>
     
 }
 
-export const authId= (req,res,next) => {
+export const authId= (req,res,next) => { // check your userID 
 
     if(req.session.user.roleId ==1 || req.session.user.roleId ==2  ){
         //console.log(` role id  ${req.session.user.roleId}`);
