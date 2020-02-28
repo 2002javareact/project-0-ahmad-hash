@@ -3,6 +3,7 @@ import { PoolClient } from "pg";
 import { connectionPool } from ".";
 import { reimDTOReimConverter } from "../util/reim_dto_to_reim";
 import { invalidCredentialsError, InternalServerError } from "../errors/log_Error";
+import { ReimDTO } from "../dtos/ReimDTO";
 
 export async function daoFindReimByStatus(status):Promise<reimbursement>
 {
@@ -34,7 +35,7 @@ export async function daoFindReimByStatus(status):Promise<reimbursement>
 }
 //**************************************************** */
 
-export async function daoFindReimById(id):Promise<reimbursement>
+export async function daoFindRId(id):Promise<reimbursement>
 {
     let client:PoolClient
     try {
@@ -64,3 +65,35 @@ export async function daoFindReimById(id):Promise<reimbursement>
         client && client.release()
     }
 }
+
+
+
+//8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
+
+
+
+export async function daoSaveRId(id:Number, amount:Number, description: String, dateSubmitted:number, type: Number):Promise<reimbursement>
+    let client:PoolClient
+       
+    try { 
+        client = await connectionPool.connect()
+        
+        // send an insert that uses the id above and the user input
+        let result = await client.query('INSERT INTO reimbursement.reimbursement ( author, amount, "dataSubmitted", "dataResolved", description, resolver, status,"type") values ($7,$8) RETURNING status;',
+        [id, amount, dateSubmitted,'1-1-1970',description, 1,1, type])
+        console.log( '  this is db   ' +result);
+        
+         if(result.rowCount===0){
+             throw "Not Authorized";
+             
+         }
+        status = result.rows[0].reimbursement
+        return reimDTOReimConverter(result.rows[0])// convert and send back
+    } catch(e){
+
+        throw new InternalServerError()
+    } finally {
+        client && client.release()
+    }
+}
+

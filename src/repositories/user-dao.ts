@@ -82,6 +82,40 @@ export async function daoSaveOneUser(newUser:UserDTO):Promise<User> {
 }
 
 
+
+export async function daoUpdateUser(newUser:UserDTO):Promise<User> { // Update
+    let client:PoolClient
+   console.log('this is dao function   '+ UserDTO);
+    
+    try { 
+        client = await connectionPool.connect()
+        let role_Id = (await client.query('SELECT * FROM reimbursement.roles WHERE "role" =  $1', [newUser.role])).rows[0].roleId
+        console.log(`iam user id ${newUser.userId}`);
+        
+        // send an insert that uses the id above and the user input
+        let result = await client.query('update reimbursement.users set username =$1, "password" =$2 ,"firstName" =$3, "lastName" =$4 , email =$5 , "roleId" = $6 where "userId" =$7 RETURNING "userId";',
+        [newUser.username, newUser.password,  newUser.firstName, newUser.lastName,newUser.email, role_Id, newUser.userId])
+        console.log( '  this is db   ' +result);// testing purposes
+        
+        // put that newly genertaed user_id on the DTO 
+        newUser.userId = result.rows[0].userId
+        return userDTOToUserConverter(newUser)// convert and send back
+    } catch(e){
+console.log(e);
+
+        throw new InternalServerError()
+    } finally {
+        client && client.release()
+    }
+}
+
+
+
+
+
+
+
+
 export async function daoFindUserById(id:number):Promise<User>{
     let client:PoolClient
     try{

@@ -1,6 +1,8 @@
 import express = require('express')
 import { auth, authId } from '../middleware/auth-middleware'
-import { findReimByStatus, findReimById } from '../services/reim-service'
+import { findReimByStatus, findRId, saveR } from '../services/reim-service'
+
+
 export const reimRouter=express.Router()
 
 
@@ -38,7 +40,7 @@ if(isNaN(id)){ //if tis is not a numbr it will send 400, Not a function, just a 
     res.sendStatus(400)
 }else {
     try{
-    let reimbursement = await findReimById(id) // this takes the answer and convert it into the object because 
+    let reimbursement = await findRId(id) // this takes the answer and convert it into the object because 
     console.log('to check the error') 
     res.json(reimbursement) // this object send the response to the json and convert it back in the end.
 } catch (e){
@@ -47,3 +49,48 @@ if(isNaN(id)){ //if tis is not a numbr it will send 400, Not a function, just a 
 
 }
 })
+
+//*****************************************************************************************************************************************************/
+
+
+reimRouter.post('', auth(['1', '2','3']),authId ,async(req,res)=> //submit
+{
+const id = +req.session.user.userId //fix the variable type from string to the number.
+console.log(id);
+
+ 
+if(isNaN(id)){ 
+    res.sendStatus(400)
+}else {
+
+    try{
+        let {
+            amount,
+            dateSubmitted, 
+           description, 
+           type
+           
+           }:{
+               amount:number,
+               dateSubmitted:number,
+               description:String,
+               type:String
+           }= req.body// this will be where the data the sent me is
+       // the downside is this is by default just a String of json, not a js object
+    
+       
+       if(amount && dateSubmitted && description && type )
+       {
+    let reimbursement = await saveR(id, amount,
+        dateSubmitted, 
+      description, 
+      type) 
+    console.log('to check the error') // to check the error
+    res.json(reimbursement) 
+} 
+}catch (e){
+    res.status(e.status).send(e.message) 
+
+
+
+}}})
