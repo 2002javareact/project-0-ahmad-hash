@@ -2,7 +2,7 @@ import { reimbursement } from "../models/reimbursement";
 import { daoFindReimByStatus,  daoFindRId, daosubmitNewReimbursement, daoupdateReimbursement } from "../repositories/reim-dao";
 import { ReimDTO } from "../dtos/ReimDTO";
 
-// this connect my request to the database.
+// connects request to the database.
 export async function findReimByStatus(status:Number) : Promise<reimbursement>
 {
     console.log('this is service:  ' +reimbursement); // test purposes
@@ -10,7 +10,7 @@ export async function findReimByStatus(status:Number) : Promise<reimbursement>
     return await daoFindReimByStatus (status)
 }
 
-export async function findRId(id:Number) : Promise<reimbursement> //changed to findRId
+export async function findRId(id:Number) : Promise<reimbursement> 
 {
 
     return await daoFindRId(id)

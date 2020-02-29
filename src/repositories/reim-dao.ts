@@ -98,7 +98,7 @@ export async function daoupdateReimbursement(newReimbursement:ReimDTO):Promise<r
     try { 
         client = await connectionPool.connect()
         // send a query and immeadiately get the role id matching the name on the dto
-       //  let role_Id = (await client.query('SELECT * FROM reimbursement.roles WHERE "role" =  $1', [newUser.role])).rows[0].roleId
+       
         let result = await client.query('update reimbursement.reimbursement set "reimbursementId" =$1,author =$2 , amount =$3, "dateSubmitted" =$4,"dateResolved" =$5,description =$6,resolver =$7,status =$8,"type" =$9 where "reimbursementId" =$1  RETURNING "reimbursementId" ;',
         [newReimbursement.reimbursementId, +newReimbursement.author , newReimbursement.amount, newReimbursement.dateSubmitted,newReimbursement.dateResolved, newReimbursement.description
             ,newReimbursement.resolver,newReimbursement.status, newReimbursement.type])
@@ -107,7 +107,7 @@ export async function daoupdateReimbursement(newReimbursement:ReimDTO):Promise<r
         newReimbursement.reimbursementId = result.rows[0].reimbursementId
         return reimDTOReimConverter(newReimbursement)// convert and send back
     } catch(e){
-       // console.log(e);
+       // console.log(error); // test purposes 
         
         throw new invalidCredentialsError()
     } finally {

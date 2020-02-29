@@ -46,10 +46,10 @@ export const authId= (req,res,next) => { // check your userID
 
 export const authFactory = (roles:string[]) => {
     return (req,res,next) => {
-        // this checks that you are logged in
+        // this plave here checks if you are logged in
         if(!req.session.user){
             res.status(401).send('Please Login')
-        // is there is the special role Everyone, allow them in
+        // special role Everyone, allow them in
         } else if(roles.includes('Everyone')){
             next()
         } else {

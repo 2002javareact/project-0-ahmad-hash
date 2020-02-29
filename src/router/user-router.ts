@@ -33,9 +33,9 @@ userRouter.post('', auth(['1']), async (req,res)=>
             firstName:String,
             lastName:String,
             role:String
-        }= req.body// this will be where the data the sent me is
-    // the downside is this is by default just a String of json, not a js object
-    //console.log(username, password  , emailAddress , id, firstName , lastName , role );
+        }= req.body// data is in the body of this request
+    //String of json, not a js object
+    //console.log(username,...
     
     if(username && password && emailAddress && id && firstName && lastName && role)
     {       
@@ -95,9 +95,8 @@ userRouter.patch('', auth(['1']), async (req,res)=>
             firstName:String,
             lastName:String,
             role:String
-        }= req.body// this will be where the data the sent me is
-    // the downside is this is by default just a String of json, not a js object
-    //console.log(username, password  , emailAddress , id, firstName , lastName , role );
+        }= req.body// this is where the request body data is, which is sent in the request.
+    // console.log test here
     
     if(username && password && emailAddress && id && firstName && lastName && role)
     {       
