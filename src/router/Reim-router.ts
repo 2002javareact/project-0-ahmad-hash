@@ -1,11 +1,10 @@
 import express = require('express')
 import { auth, authId } from '../middleware/auth-middleware'
-import { findReimByStatus, findRId, saveR } from '../services/reim-service'
+import { findReimByStatus, findRId,  submitNewReimbursement, updateReimbursement } from '../services/reim-service'
+import { ReimDTO } from '../dtos/ReimDTO'
 
 
 export const reimRouter=express.Router()
-
-
 
 reimRouter.get('/status/:status',auth(['1','2', '3']),authId ,async(req,res)=>
 {
@@ -24,15 +23,12 @@ reimRouter.get('/status/:status',auth(['1','2', '3']),authId ,async(req,res)=>
         catch(e){
             res.status(e.status).send(e.message)
             }//xhr, aws, javascript DOM, html node, agile we gonna do tmr
-      
-        
     }
 })
 
 
 reimRouter.get('/author/userId/:id', auth(['1','2', '3']),authId ,async(req,res)=>
 {
-//const id =+
 const id = +req.params.id //fix the variable type from string to the number.
 console.log(id);
 
@@ -46,51 +42,93 @@ if(isNaN(id)){ //if tis is not a numbr it will send 400, Not a function, just a 
 } catch (e){
     res.status(e.status).send(e.message) //just part of try catch the syntax.
 }
-
 }
 })
-
 //*****************************************************************************************************************************************************/
-
-
-reimRouter.post('', auth(['1', '2','3']),authId ,async(req,res)=> //submit
+reimRouter.post('',auth(['1','2','3']),authId ,async(req,res)=>
 {
-const id = +req.session.user.userId //fix the variable type from string to the number.
-console.log(id);
-
- 
-if(isNaN(id)){ 
-    res.sendStatus(400)
-}else {
-
-    try{
-        let {
+    try {
+        const {
+            author,
             amount,
-            dateSubmitted, 
-           description, 
-           type
-           
-           }:{
-               amount:number,
-               dateSubmitted:number,
-               description:String,
-               type:String
-           }= req.body// this will be where the data the sent me is
-       // the downside is this is by default just a String of json, not a js object
-    
-       
-       if(amount && dateSubmitted && description && type )
-       {
-    let reimbursement = await saveR(id, amount,
-        dateSubmitted, 
-      description, 
-      type) 
-    console.log('to check the error') // to check the error
-    res.json(reimbursement) 
-} 
-}catch (e){
-    res.status(e.status).send(e.message) 
+            dateSubmitted,
+            dateResolved,
+            description,
+            resolver,
+            status,
+            type            
+        }:{
+            author:String
+            amount:number
+            dateSubmitted:Date
+            dateResolved:Date
+            description:String
+            resolver:String
+            status:String
+            type:String
+        }=req.body
+
+        if(author && amount && dateSubmitted && dateResolved && description && resolver && status&&type)
+        {       
+            let newReimbursement = await submitNewReimbursement(new ReimDTO(
+               0, author, amount,
+                 dateSubmitted, 
+                 dateResolved, description,
+                 resolver,
+                 status,type)
+            )
+            res.status(201).json(newReimbursement);
+        } else {
+            res.status(400).send('Please include all user fields')
+        }
+            } catch (e) {
+                res.status(400).send('incorrect information')
+            
+            }}
+        )
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        reimRouter.patch('',auth(['1','2']),authId ,async(req,res)=>
+{
+    try {
+        const {
+            author,
+            amount,
+            dateSubmitted,
+            dateResolved,
+            description,
+            resolver,
+            status,
+            type            
+        }:{
+            author:String
+            amount:number
+            dateSubmitted:Date
+            dateResolved:Date
+            description:String
+            resolver:String
+            status:String
+            type:String
+        }=req.body
 
 
-
-}}})
+        if(author && amount && dateSubmitted && dateResolved && description && resolver && status&&type)
+        {       
+            let newReimbursement = await updateReimbursement(new ReimDTO(
+               0, author, amount,
+                 dateSubmitted, 
+                 dateResolved, description,
+                 resolver,
+                 status,type)
+            )
+    // this would be some function for adding a new user to a db
+            res.status(201).json(newReimbursement);
+        } else {
+            res.status(400).send('Please include all user fields')
+            // for setting a status and a body
+        }
+            } catch (e) {
+                res.status(400).send('Please enter valied information')
+            }}
+        )
+        

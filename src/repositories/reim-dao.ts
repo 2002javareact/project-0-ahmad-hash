@@ -66,34 +66,54 @@ export async function daoFindRId(id):Promise<reimbursement>
     }
 }
 
-
-
-//8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-
-
-
-export async function daoSaveRId(id:Number, amount:Number, description: String, dateSubmitted:number, type: Number):Promise<reimbursement>
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export async function daosubmitNewReimbursement(newReimbursement:ReimDTO):Promise<reimbursement> {
     let client:PoolClient
-       
     try { 
         client = await connectionPool.connect()
-        
-        // send an insert that uses the id above and the user input
-        let result = await client.query('INSERT INTO reimbursement.reimbursement ( author, amount, "dataSubmitted", "dataResolved", description, resolver, status,"type") values ($7,$8) RETURNING status;',
-        [id, amount, dateSubmitted,'1-1-1970',description, 1,1, type])
-        console.log( '  this is db   ' +result);
-        
-         if(result.rowCount===0){
-             throw "Not Authorized";
-             
-         }
-        status = result.rows[0].reimbursement
-        return reimDTOReimConverter(result.rows[0])// convert and send back
-    } catch(e){
 
-        throw new InternalServerError()
+        let result = await client.query
+        ('Insert into reimbursement.reimbursement ( author ,amount ,"dateSubmitted" ,"dateResolved" ,description ,resolver ,status ,"type" ) values ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING "reimbursementId";'
+        ,/*[id,amount,date,'01-01-1111',description,3,1,type]*/
+        
+        [ +newReimbursement.author , newReimbursement.amount, newReimbursement.dateSubmitted,'01-01-1970', newReimbursement.description
+            ,2,1, newReimbursement.type])
+        // console.log( '  this is db   ' +result);
+        // put that newly genertaed user_id on the DTO 
+        newReimbursement.reimbursementId = result.rows[0].reimbursementId
+        return reimDTOReimConverter(newReimbursement)// convert and send back
+    } catch(e){
+       // console.log(e);
+        
+        throw new invalidCredentialsError()
     } finally {
         client && client.release()
     }
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export async function daoupdateReimbursement(newReimbursement:ReimDTO):Promise<reimbursement> {
+    let client:PoolClient
+    //console.log('this is dao function   '+ ReimDTO);
+    try { 
+        client = await connectionPool.connect()
+        // send a query and immeadiately get the role id matching the name on the dto
+       //  let role_Id = (await client.query('SELECT * FROM reimbursement.roles WHERE "role" =  $1', [newUser.role])).rows[0].roleId
+        let result = await client.query('update reimbursement.reimbursement set "reimbursementId" =$1,author =$2 , amount =$3, "dateSubmitted" =$4,"dateResolved" =$5,description =$6,resolver =$7,status =$8,"type" =$9 where "reimbursementId" =$1  RETURNING "reimbursementId" ;',
+        [newReimbursement.reimbursementId, +newReimbursement.author , newReimbursement.amount, newReimbursement.dateSubmitted,newReimbursement.dateResolved, newReimbursement.description
+            ,newReimbursement.resolver,newReimbursement.status, newReimbursement.type])
+        // console.log( '  this is db   ' +result);
+        // put that newly genertaed user_id on the DTO 
+        newReimbursement.reimbursementId = result.rows[0].reimbursementId
+        return reimDTOReimConverter(newReimbursement)// convert and send back
+    } catch(e){
+       // console.log(e);
+        
+        throw new invalidCredentialsError()
+    } finally {
+        client && client.release()
+    }
+}
+
+
 
