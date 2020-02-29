@@ -68,7 +68,7 @@ reimRouter.post('',auth(['1','2','3']),authId ,async(req,res)=>
             type:String
         }=req.body
 
-        if(author && amount && dateSubmitted && dateResolved && description && resolver && status&&type)
+        if(author && amount && dateSubmitted &&  description &&  type)
         {       
             let newReimbursement = await submitNewReimbursement(new ReimDTO(
                0, author, amount,
@@ -92,6 +92,7 @@ reimRouter.post('',auth(['1','2','3']),authId ,async(req,res)=>
 {
     try {
         const {
+            reimbursementId,
             author,
             amount,
             dateSubmitted,
@@ -101,6 +102,7 @@ reimRouter.post('',auth(['1','2','3']),authId ,async(req,res)=>
             status,
             type            
         }:{
+            reimbursementId:number
             author:String
             amount:number
             dateSubmitted:Date
@@ -115,7 +117,7 @@ reimRouter.post('',auth(['1','2','3']),authId ,async(req,res)=>
         if(author && amount && dateSubmitted && dateResolved && description && resolver && status&&type)
         {       
             let newReimbursement = await updateReimbursement(new ReimDTO(
-               0, author, amount,
+                reimbursementId, author, amount,
                  dateSubmitted, 
                  dateResolved, description,
                  resolver,
@@ -128,7 +130,7 @@ reimRouter.post('',auth(['1','2','3']),authId ,async(req,res)=>
             // for setting a status and a body
         }
             } catch (e) {
-                res.status(400).send('Please enter valied information')
+                res.status(400).send('Please enter valid information')
             }}
         )
         

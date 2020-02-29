@@ -83,7 +83,7 @@ export async function daosubmitNewReimbursement(newReimbursement:ReimDTO):Promis
         newReimbursement.reimbursementId = result.rows[0].reimbursementId
         return reimDTOReimConverter(newReimbursement)// convert and send back
     } catch(e){
-       // console.log(e);
+        console.log(e);
         
         throw new invalidCredentialsError()
     } finally {

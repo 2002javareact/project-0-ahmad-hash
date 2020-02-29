@@ -113,7 +113,7 @@ userRouter.patch('', auth(['1']), async (req,res)=>
 // this would be some function for adding a new user to a db
         res.status(201).json(newUser);
     } else {
-        res.status(400).send('Please Include all user fields')
+        res.status(400).send('Please Include all uuser fields')
         // for setting a status and a body
     }
 })
