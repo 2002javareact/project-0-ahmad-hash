@@ -5,6 +5,7 @@ import {findUserByUsernameAndPassword} from "./services/user-services"
 import { sessionMiddleware } from './middleware/session'
 import { userRouter } from './router/user-router'
 import { reimRouter } from './router/Reim-router'
+import { corsFilter } from './Middleware/cors-filter'
 
 
 
@@ -15,6 +16,7 @@ pro.use('/',bodyParser.json())
 
 pro.use(logMiddleware)
 pro.use(sessionMiddleware)
+pro.use(corsFilter)
 
 pro.use('/users', userRouter)
 pro.use('/reimbursements', reimRouter) // reimburstment route is here so skip it from the user.
