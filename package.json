@@ -2,11 +2,11 @@
   "name": "ers",
   "version": "1.0.0",
   "description": "Expense Reimbursement System (ERS) API",
-  "main": ".ts",
+  "main": "index.ts",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
     "deploy": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -21,15 +21,19 @@
   "devDependencies": {
     "@types/express": "^4.17.2",
     "@types/express-session": "^1.15.16",
+    "@types/jest": "^25.1.3",
     "@types/pg": "^7.14.1",
-    "express-session": "^1.17.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jest": "^25.1.0",
     "nodemon": "^2.0.2",
+    "ts-jest": "^25.2.1",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "pg": "^7.18.2"
   }
 }
