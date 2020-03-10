@@ -1,11 +1,11 @@
 import  express= require ('express')
-import {logMiddleware} from './Middleware/log_middleware'
+import {logMiddleware} from './middleware/log_middleware'
 import bodyParser = require('body-parser')
 import {findUserByUsernameAndPassword} from "./services/user-services"
-import { sessionMiddleware } from './Middleware/session'
+import { sessionMiddleware } from './middleware/session'
 import { userRouter } from './router/user-router'
 import { reimRouter } from './router/Reim-router'
-import { corsFilter } from './Middleware/cors-filter'
+import { corsFilter } from './middleware/cors-filter'
 
 
 
