@@ -8,9 +8,6 @@ import { reimRouter } from './router/Reim-router'
 import { corsFilter } from './middleware/cors-filter'
 
 
-
-
-
 const pro = express()
 pro.use('/',bodyParser.json())
 
