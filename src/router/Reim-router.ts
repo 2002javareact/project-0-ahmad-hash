@@ -1,7 +1,7 @@
 import express = require('express')
 import { auth, authId } from '../middleware/auth-middleware'
 import { findReimByStatus, findRId,  submitNewReimbursement, updateReimbursement } from '../services/reim-service'
-import { ReimDTO } from '../dtos/ReimDTO'
+import { ReimDTO } from '../dtos/reimDTO'
 
 
 export const reimRouter=express.Router()
