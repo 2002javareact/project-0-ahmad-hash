@@ -1,4 +1,4 @@
-import { ReimDTO } from "../dtos/ReimDTO";
+import { ReimDTO } from "../dtos/reimDTO";
 import { reimbursement } from "../models/reimbursement";
 
 

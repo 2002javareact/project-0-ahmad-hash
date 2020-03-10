@@ -1,6 +1,6 @@
 import { reimbursement } from "../models/reimbursement";
 import { daoFindReimByStatus,  daoFindRId, daosubmitNewReimbursement, daoupdateReimbursement } from "../repositories/reim-dao";
-import { ReimDTO } from "../dtos/ReimDTO";
+import { ReimDTO } from "../dtos/reimDTO";
 
 // connects request to the database.
 export async function findReimByStatus(status:Number) : Promise<reimbursement>

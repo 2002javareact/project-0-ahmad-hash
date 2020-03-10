@@ -3,7 +3,7 @@ import { PoolClient } from "pg";
 import { connectionPool } from ".";
 import { reimDTOReimConverter } from "../util/reim_dto_to_reim";
 import { invalidCredentialsError, InternalServerError } from "../errors/log_Error";
-import { ReimDTO } from "../dtos/ReimDTO";
+import { ReimDTO } from "../dtos/reimDTO";
 
 export async function daoFindReimByStatus(status):Promise<reimbursement>
 {
