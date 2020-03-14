@@ -16,7 +16,7 @@ pro.use(sessionMiddleware)
 pro.use(corsFilter)
 
 pro.use('/users', userRouter)
-pro.use('/reimbursements', reimRouter) // reimburstment route is here so skip it from the user.
+pro.use('/reimbursements', reimRouter) // reimburstment u route is here so skip it from the user.
 
 pro.post('/login', async (req,res)=>{
     
